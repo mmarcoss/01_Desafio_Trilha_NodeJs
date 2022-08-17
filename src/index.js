@@ -36,8 +36,6 @@ app.post('/users', (request, response) => {
   }
   users.push(user);
   return response.status(201).json(user);
-
-    //pegar os valores do body e adicionar dentro do vetor (nosso banco de dados em memória)
 });
 
 app.get('/todos', checksExistsUserAccount, (request, response) => {
