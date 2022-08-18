@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const { v4: uuidv4 } = require('uuid');
+const { json } = require('express');
 
 const app = express();
 
@@ -91,9 +92,15 @@ app.patch('/todos/:id/done', checksExistsUserAccount, (request, response) => {
 });
 
 app.delete('/todos/:id', checksExistsUserAccount, (request, response) => {
-  const { username } = request; 
-  user.todos.splice(user, 1);
-  return response.status(200).json(user);
+  const { user } = request; 
+  const { id } = request.params;
+const todoIndex =  user.todos.findIndex(todo => todo.id === id);
+
+if(todoIndex == -1){
+  return response.status(404).json({error: 'not found todo'});
+}
+user.todos.splice(todoIndex, 1);
+return response.status(204).json();
 });
 
 module.exports = app;
